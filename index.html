@@ -48,8 +48,8 @@
 
     /* === БАЗОВЫЕ СТИЛИ === */
     *{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth;scroll-padding-top:var(--header-height)}
-    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    html{scroll-behavior:smooth}
+    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;margin-top:var(--header-height)}
     ::selection{background:var(--accent);color:#000}
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
@@ -225,7 +225,7 @@
     .mobile-nav span{padding:12px 0;color:var(--text-secondary);font-weight:500;border-bottom:1px solid var(--border);cursor:pointer}
 
     /* === ХЛЕБНЫЕ КРОШКИ === */
-    .breadcrumbs{max-width:var(--max-width);margin:0 auto;padding:calc(var(--header-height)+24px) 24px 0;display:flex;gap:8px;align-items:center;font-size:0.85rem;color:var(--text-secondary)}
+    .breadcrumbs{max-width:var(--max-width);margin:0 auto;padding:24px 24px 0;display:flex;gap:8px;align-items:center;font-size:0.85rem;color:var(--text-secondary)}
     .breadcrumbs span:hover{color:var(--accent);cursor:pointer}
     .breadcrumbs .current{color:var(--text);cursor:default}
 
@@ -285,11 +285,11 @@
     .bundle-card-sm .bundle-price{font-size:1.3rem;font-weight:800;color:var(--accent)}
 
     /* === ОФОРМЛЕНИЕ ЗАКАЗА === */
-    .checkout-page{max-width:800px;margin:0 auto;padding:calc(var(--header-height)+40px) 24px 100px}
+    .checkout-page{max-width:1000px;margin:0 auto;padding:40px 24px 100px}
     .checkout-header{text-align:center;margin-bottom:48px}
     .checkout-header h1{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;margin-bottom:12px}
     .checkout-header p{color:var(--text-secondary);font-size:1.05rem}
-    .checkout-layout{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start}
+    .checkout-layout{display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:start}
     .checkout-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:32px}
     .form-group{margin-bottom:20px}
     .form-group label{display:block;font-size:0.9rem;font-weight:600;margin-bottom:8px}
@@ -313,7 +313,7 @@
     .checkout-privacy{margin-top:16px;font-size:0.8rem;color:var(--text-secondary);text-align:center;line-height:1.5}
 
     /* === УСПЕШНЫЙ ЗАКАЗ === */
-    .success-page{min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:calc(var(--header-height)+40px) 24px 80px;max-width:600px;margin:0 auto}
+    .success-page{min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 24px 80px;max-width:600px;margin:0 auto}
     .success-icon{width:80px;height:80px;background:var(--accent-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:24px;border:2px solid var(--accent);box-shadow:0 0 30px var(--accent-glow)}
     .success-page h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;margin-bottom:16px}
     .success-page p{color:var(--text-secondary);font-size:1.05rem;margin-bottom:32px;line-height:1.6}
@@ -329,7 +329,7 @@
       .product-layout{grid-template-columns:1fr}
       .product-gallery{position:static}
       .checkout-layout{grid-template-columns:1fr}
-      .order-summary{position:static}
+      .order-summary{position:static; margin-top: 32px}
       .faq-grid{grid-template-columns:1fr}
     }
     @media(max-width:768px){
@@ -512,7 +512,8 @@
       render() {
         const { page, params } = this.parse();
         const app = document.getElementById("app");
-        window.scrollTo(0, 0);
+        // Плавная прокрутка на самый верх при смене страницы
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
         if (!page || page === "") {
           app.innerHTML = renderHome();
@@ -639,6 +640,8 @@
     }
 
     function initHome() {
+      // Убеждаемся что страница начинается с верха
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       // Рендерим бандлы
       document.getElementById("bundlesGrid").innerHTML = SITE.bundles.map(b => {
         const discount = Math.round((1 - b.price / b.oldPrice) * 100);
@@ -822,6 +825,8 @@
     }
 
     function initBundlePage(b) {
+      // Убеждаемся что страница начинается с верха
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       window.setMainImg = (emoji, src) => {
         const main = document.getElementById("mainImg");
         if (src) {
@@ -922,6 +927,8 @@
     }
 
     function initProductPage(p) {
+      // Убеждаемся что страница начинается с верха
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       window.setMainImg = (emoji, src) => {
         const main = document.getElementById("mainImg");
         if (src) {
@@ -1001,6 +1008,8 @@
     }
 
     function initCheckout() {
+      // Убеждаемся что страница начинается с верха
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       const form = document.getElementById("checkoutForm");
       const itemsField = document.getElementById("orderItemsField");
       const totalField = document.getElementById("orderTotalField");
@@ -1082,7 +1091,11 @@
           document.getElementById("mobileNav").classList.remove("active");
         }
       });
-      window.addEventListener("hashchange", () => router.render());
+      window.addEventListener("hashchange", () => {
+        // Сбрасываем scroll перед рендером новой страницы
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        router.render();
+      });
       router.render();
     });
   </script>
