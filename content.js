@@ -9,7 +9,7 @@ const SITE = {
   "brand": "Import Syndicate",
   "tagline": "Оптовые поставки редких напитков из Европы",
   "year": "2023–2026",
-  "formspreeId": "https://formspree.io/f/xlgkaozl",
+  "formspreeId": "xlgkaozl",
   "sellerEmail": "info@importsyndicate.ru",
   "telegram": "https://t.me/importsyndicate",
   "imagesPath": "images/",
