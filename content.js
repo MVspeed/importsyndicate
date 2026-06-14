@@ -9,8 +9,8 @@ const SITE = {
   "brand": "Import Syndicate",
   "tagline": "Оптовые поставки редких напитков из Европы",
   "year": "2023–2026",
-  "formspreeId": "YOUR_FORMSPREE_ID",
-  "sellerEmail": "hello@importsyndicate.ru",
+  "formspreeId": "https://formspree.io/f/xlgkaozl",
+  "sellerEmail": "info@importsyndicate.ru",
   "telegram": "https://t.me/importsyndicate",
   "imagesPath": "images/",
   "nav": [
@@ -21,7 +21,7 @@ const SITE = {
   ],
   "hero": {
     "headline": "Оптовые поставки редких напитков из Европы",
-    "subheadline": "Прямой импорт энергетиков Celsius и Coca-Cola Zero Caffeine. Работаем с магазинами, дистрибьюторами и HoReCa — от одной паллеты.",
+    "subheadline": "Прямой импорт энергетиков Celsius и Coca-Cola Zero Caffeine. Работаем с магазинами, дистрибьюторами и HoReCa",
     "badges": ["Прямой импорт", "Оптовые цены", "Поставки по РФ"]
   },
   "whyUs": [
