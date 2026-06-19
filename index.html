@@ -152,11 +152,19 @@
     .footer-col a:hover{color:var(--accent)}
     .footer-bottom{border-top:1px solid var(--border);padding-top:24px;text-align:center;color:var(--text-secondary);font-size:0.8rem}
 
-    /* === МОБИЛЬНОЕ МЕНЮ === */
-    .mobile-nav{display:none;position:fixed;top:var(--header-height);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:16px 24px;z-index:999;flex-direction:column;gap:12px}
-    .mobile-nav.active{display:flex}
-    .mobile-nav span{padding:12px 0;color:var(--text-secondary);font-weight:500;border-bottom:1px solid var(--border);cursor:pointer}
 
+    /* === МОБИЛЬНОЕ МЕНЮ === */
+    .mobile-nav{display:flex;flex-direction:column;position:fixed;top:var(--header-height);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);z-index:999;max-height:0;overflow:hidden;opacity:0;transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.25s ease,padding 0.3s ease;padding:0 24px}
+    .mobile-nav.active{max-height:400px;opacity:1;padding:8px 24px 16px}
+    .mobile-nav span{padding:14px 0;color:var(--text-secondary);font-weight:500;border-bottom:1px solid var(--border);cursor:pointer;transition:color 0.2s,transform 0.3s ease,opacity 0.3s ease;transform:translateY(-8px);opacity:0}
+    .mobile-nav.active span{transform:translateY(0);opacity:1}
+    .mobile-nav.active span:nth-child(1){transition-delay:0.05s}
+    .mobile-nav.active span:nth-child(2){transition-delay:0.10s}
+    .mobile-nav.active span:nth-child(3){transition-delay:0.15s}
+    .mobile-nav.active span:nth-child(4){transition-delay:0.20s}
+    .mobile-nav.active span:nth-child(5){transition-delay:0.25s}
+    .mobile-nav span:hover{color:var(--accent)}
+    .mobile-nav span:last-child{border-bottom:none}
     /* === ХЛЕБНЫЕ КРОШКИ === */
     .breadcrumbs{max-width:var(--max-width);margin:0 auto;padding:24px 24px 0;display:flex;gap:8px;align-items:center;font-size:0.85rem;color:var(--text-secondary)}
     .breadcrumbs span:hover{color:var(--accent);cursor:pointer}
@@ -274,7 +282,10 @@
     // МОБИЛЬНОЕ МЕНЮ
     // ============================================
     function toggleMobileMenu() {
-      document.getElementById("mobileNav").classList.toggle("active");
+      const nav = document.getElementById("mobileNav");
+      const btn = document.getElementById("mobileMenuBtn");
+      const isOpen = nav.classList.toggle("active");
+      btn.textContent = isOpen ? "✕" : "☰";
     }
 
     // ============================================
@@ -293,7 +304,7 @@
         const { page, params } = this.parse();
         const app = document.getElementById("app");
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-        document.getElementById("mobileNav").classList.remove("active");
+        document.getElementById("mobileNav").classList.remove("active"); document.getElementById("mobileMenuBtn").textContent = "☰";
 
         if (!page || page === "") {
           app.innerHTML = renderHome();
@@ -644,7 +655,7 @@
       renderNav();
       document.getElementById("mobileMenuBtn").addEventListener("click", toggleMobileMenu);
       document.addEventListener("keydown", e => {
-        if (e.key === "Escape") document.getElementById("mobileNav").classList.remove("active");
+        if (e.key === "Escape") { document.getElementById("mobileNav").classList.remove("active"); document.getElementById("mobileMenuBtn").textContent = "☰"; document.getElementById("mobileMenuBtn").textContent = "☰"; }
       });
       window.addEventListener("hashchange", () => {
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
