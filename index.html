@@ -303,7 +303,7 @@
       render() {
         const { page, params } = this.parse();
         const app = document.getElementById("app");
-        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
         document.getElementById("mobileNav").classList.remove("active"); document.getElementById("mobileMenuBtn").textContent = "☰";
 
         if (!page || page === "") {
