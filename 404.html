@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Import Syndicate</title>
+  <script>
+    // GitHub Pages SPA redirect hack
+    // Сохраняем путь в sessionStorage и редиректим на главную
+    // index.html при загрузке подхватит путь и откроет нужную страницу
+    var path = window.location.pathname;
+    var search = window.location.search;
+    sessionStorage.setItem('spa_redirect', path + search);
+    window.location.replace(
+      window.location.origin + window.location.pathname.split('/').slice(0, 2).join('/') + '/'
+    );
+  </script>
+</head>
+<body></body>
+</html>

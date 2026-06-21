@@ -14,7 +14,7 @@
   <meta property="og:image" content="https://importsyndicate.ru/images/og-image.jpg">
   <meta property="og:url" content="https://importsyndicate.ru/">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="favicon.ico">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🥤</text></svg>">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebSite","name":"Import Syndicate","url":"https://importsyndicate.ru/","description":"Оптовые поставки редких напитков из Европы и США — прямой импорт"}
   </script>
@@ -303,7 +303,7 @@
       render() {
         const { page, params } = this.parse();
         const app = document.getElementById("app");
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         document.getElementById("mobileNav").classList.remove("active"); document.getElementById("mobileMenuBtn").textContent = "☰";
 
         if (!page || page === "") {
@@ -652,13 +652,18 @@
     // ИНИЦИАЛИЗАЦИЯ
     // ============================================
     document.addEventListener("DOMContentLoaded", () => {
+      // Восстанавливаем путь после редиректа через 404.html (GitHub Pages хак)
+      const redirect = sessionStorage.getItem('spa_redirect');
+      if (redirect && redirect !== '/') {
+        sessionStorage.removeItem('spa_redirect');
+        window.history.replaceState({}, '', redirect);
+      }
       renderNav();
       document.getElementById("mobileMenuBtn").addEventListener("click", toggleMobileMenu);
       document.addEventListener("keydown", e => {
         if (e.key === "Escape") { document.getElementById("mobileNav").classList.remove("active"); document.getElementById("mobileMenuBtn").textContent = "☰"; document.getElementById("mobileMenuBtn").textContent = "☰"; }
       });
-      window.addEventListener("hashchange", () => {
-        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      window.addEventListener("popstate", () => {
         router.render();
       });
       router.render();
