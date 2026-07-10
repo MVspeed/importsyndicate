@@ -14,13 +14,15 @@
   <meta property="og:image" content="https://importsyndicate.ru/images/og-image.jpg">
   <meta property="og:url" content="https://importsyndicate.ru/">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🥤</text></svg>">
+  <!-- ФАВИКОНКА: вставьте сюда свою иконку для вкладки браузера (файл favicon.png/.ico, идеально 32x32 или 64x64px) -->
+  <link rel="icon" href="favicon.png" type="image/png">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebSite","name":"Import Syndicate","url":"https://importsyndicate.ru/","description":"Оптовые поставки редких напитков из Европы и США — прямой импорт"}
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://wsrv.nl">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
@@ -272,11 +274,42 @@
     // УТИЛИТЫ
     // ============================================
     const imgPath = name => name ? SITE.imagesPath + name : null;
-    const imgHTML = (src, fallback) =>
-      src
-        ? `<img src="${src}" alt="" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-fallback').style.display='flex'">` +
-          `<span class="img-fallback" style="display:none">${fallback}</span>`
-        : `<span class="img-fallback">${fallback}</span>`;
+
+    // ============================================
+    // ОПТИМИЗАЦИЯ ИЗОБРАЖЕНИЙ
+    // ============================================
+    // Оригинальные картинки часто весят по несколько мегабайт (фото "как есть"),
+    // из-за этого сайт грузится медленно, а на медленном интернете загрузка
+    // может вообще не успевать завершиться (картинка "не грузится").
+    //
+    // Чтобы не трогать сами файлы, изображения прогоняются через бесплатный
+    // CDN-прокси wsrv.nl: он сам скачивает оригинал с сайта, один раз сжимает,
+    // конвертирует в современный формат WebP и дальше отдаёт уже готовую,
+    // лёгкую версию из кэша — без потери видимого качества.
+    // Если прокси недоступен — картинка автоматически подгрузится напрямую
+    // с сайта, а если и это не получится — покажется эмодзи-заглушка.
+    function optimizedSrc(originalSrc, width) {
+      const absoluteUrl = new URL(originalSrc, window.location.href).href;
+      return `https://wsrv.nl/?url=${encodeURIComponent(absoluteUrl)}&w=${width}&output=webp&q=82&af`;
+    }
+
+    function imgHTML(src, fallback, { width = 480, priority = false } = {}) {
+      if (!src) return `<span class="img-fallback">${fallback}</span>`;
+      const small = optimizedSrc(src, width);
+      const large = optimizedSrc(src, width * 2);
+      const loadingAttr = priority ? `loading="eager" fetchpriority="high"` : `loading="lazy"`;
+      return `<img
+          src="${small}"
+          srcset="${small} 1x, ${large} 2x"
+          alt=""
+          ${loadingAttr}
+          decoding="async"
+          width="${width}" height="${width}"
+          data-orig="${src}"
+          onerror="if(!this.dataset.fallbackStage){this.dataset.fallbackStage='orig';this.removeAttribute('srcset');this.src=this.dataset.orig;}else{this.style.display='none';this.parentElement.querySelector('.img-fallback').style.display='flex';}"
+        >` +
+        `<span class="img-fallback" style="display:none">${fallback}</span>`;
+    }
 
     // ============================================
     // МОБИЛЬНОЕ МЕНЮ
@@ -386,9 +419,9 @@
         `<div class="why-card"><div class="why-icon">${w.icon}</div><h3>${w.title}</h3><p>${w.desc}</p></div>`
       ).join("");
 
-      document.getElementById("productsGrid").innerHTML = SITE.products.map(p =>
+      document.getElementById("productsGrid").innerHTML = SITE.products.map((p, i) =>
         `<article class="product-card" onclick="router.navigate('product/${p.id}')">
-          <div class="product-img">${imgHTML(imgPath(p.image), p.emoji)}<span class="product-tag ${p.tagClass}">${p.tag}</span></div>
+          <div class="product-img">${imgHTML(imgPath(p.image), p.emoji, { width: 400, priority: i < 4 })}<span class="product-tag ${p.tagClass}">${p.tag}</span></div>
           <div class="product-info">
             <h3 class="product-name">${p.name}</h3>
             <p class="product-short">${p.shortDesc}</p>
@@ -452,7 +485,7 @@
         </div>
         <main class="product-page">
           <div class="product-layout">
-            <div class="product-main-img">${imgHTML(imgPath(p.image), p.emoji)}</div>
+            <div class="product-main-img">${imgHTML(imgPath(p.image), p.emoji, { width: 700, priority: true })}</div>
             <div class="product-info-page">
               <span class="product-tag-page ${p.tagClass}">${p.tag}</span>
               <h1>${p.name}</h1>
@@ -480,7 +513,7 @@
           <div class="related-grid">
             ${related.map(r => `
               <article class="product-card" onclick="router.navigate('product/${r.id}')">
-                <div class="product-img">${imgHTML(imgPath(r.image), r.emoji)}<span class="product-tag ${r.tagClass}">${r.tag}</span></div>
+                <div class="product-img">${imgHTML(imgPath(r.image), r.emoji, { width: 400 })}<span class="product-tag ${r.tagClass}">${r.tag}</span></div>
                 <div class="product-info">
                   <h3 class="product-name">${r.name}</h3>
                   <p class="product-short">${r.shortDesc}</p>
