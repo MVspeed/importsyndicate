@@ -145,26 +145,6 @@ const SITE = {
       "features": ["Без сахара и консервантов","Формула MetaPlus: гуарана, таурин, зелёный чай","Витамины группы B и C"]
     },
     {
-      "id": "coca-cola-zero-caffeine",
-      "name": "Coca-Cola Zero Caffeine",
-      "tag": "Новинка",
-      "tagClass": "tag-blue",
-      "emoji": "🥤",
-      "image": "cola.jpg",
-      "shortDesc": "Coca-Cola без сахара, калорий и кофеина",
-      "fullDesc": "Coca-Cola Zero Caffeine — классический вкус Coca-Cola полностью без сахара, калорий и кофеина. Объём банки — 330 мл.",
-      "composition": "Карбонизированная вода, краситель (карамельный колер E150d), регулятор кислотности (фосфорная кислота), подсластители (аспартам, ацесульфам К), натуральные ароматизаторы, регулятор кислотности (цитрат натрия). Содержит источник фенилаланина.",
-      "details": [
-        { "label": "Объём", "value": "330 мл" },
-        { "label": "Страна", "value": "ЕС" },
-        { "label": "Кофеин", "value": "0 мг" },
-        { "label": "Сахар", "value": "0 г" },
-        { "label": "Калорийность", "value": "0 ккал" },
-        { "label": "Срок годности", "value": "до 9 мес." }
-      ],
-      "features": ["Zero sugar, zero calories, zero caffeine","Узнаваемый вкус Coca-Cola без кофеина","Новый дизайн упаковки 2026 года"]
-    },
-    {
       "id": "aa-drink-protein-water-peach-yuzu",
       "name": "AA Drink Protein Water Peach Yuzu",
       "tag": "Хит",
